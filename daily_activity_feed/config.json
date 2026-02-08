@@ -20,6 +20,5 @@
   "schema": {
     "max_events_per_day": "int(1,1000)",
     "port": "int(8000,9000)"
-  },
-  "image": "ghcr.io/{arch}-daily-activity-feed"
+  }
 }
