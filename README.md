@@ -2,6 +2,7 @@
 
 [![GitHub Release](https://img.shields.io/github/v/release/TillitschScHocK/DAF---DailyActivityFeed)](https://github.com/TillitschScHocK/DAF---DailyActivityFeed/releases)
 [![License](https://img.shields.io/github/license/TillitschScHocK/DAF---DailyActivityFeed)](LICENSE)
+[![HACS](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/hacs/integration)
 
 Ein persistentes Activity Feed System für Home Assistant, das Smart Home Ereignisse speichert und übersichtlich im Dashboard darstellt.
 
@@ -11,6 +12,7 @@ Ein persistentes Activity Feed System für Home Assistant, das Smart Home Ereign
 - **Automatische Bereinigung** alter Daten
 - **REST API** zum einfachen Hinzufügen von Events
 - **Custom Integration** mit Sensoren für Home Assistant
+- **HACS-ready** mit Config Flow (keine YAML-Konfiguration nötig)
 - **Dashboard-Integration** mit flexiblen Lovelace Cards
 - **Bild-Support** für Snapshots (z.B. von Kameras)
 - **Typisierte Events** (doorbell, door, energy, custom)
@@ -21,7 +23,7 @@ Ein persistentes Activity Feed System für Home Assistant, das Smart Home Ereign
 ┌────────────────────────┐
 │   Home Assistant       │
 │   Automations          │
-└────────┬──────────────┘
+└────────┬───────────────┘
          │
          │ HTTP POST
          │
@@ -29,9 +31,9 @@ Ein persistentes Activity Feed System für Home Assistant, das Smart Home Ereign
 ┌────────────────────────┐
 │  DAF Addon (FastAPI)  │
 │  - REST API           │
-│  - SQLite/JSON Store  │
+│  - JSON Store         │
 │  - Auto Cleanup       │
-└────────┬──────────────┘
+└────────┬───────────────┘
          │
          │ HTTP GET
          │
@@ -40,7 +42,7 @@ Ein persistentes Activity Feed System für Home Assistant, das Smart Home Ereign
 │  Custom Integration   │
 │  - sensor.today       │
 │  - sensor.yesterday   │
-└────────┬──────────────┘
+└────────┬───────────────┘
          │
          ▼
 ┌────────────────────────┐
@@ -51,41 +53,59 @@ Ein persistentes Activity Feed System für Home Assistant, das Smart Home Ereign
 
 ## 📦 Installation
 
-### 1. Addon Installation
+### Teil 1: Addon Installation
 
-#### Option A: Manuell
+#### Schritt 1: Repository hinzufügen
 
-1. Kopiere den Ordner `daily_activity_feed` nach `/addons/`
-2. Gehe zu **Einstellungen** → **Add-ons** → **Add-on Store**
-3. Klicke oben rechts auf die drei Punkte → **Repositories**
+1. Gehe zu **Einstellungen** → **Add-ons** → **Add-on Store**
+2. Klicke oben rechts auf die drei Punkte ⋮
+3. Wähle **Repositories**
 4. Füge hinzu: `https://github.com/TillitschScHocK/DAF---DailyActivityFeed`
-5. Installiere das **Daily Activity Feed** Addon
-6. Starte das Addon
+5. Klicke auf **Hinzufügen**
 
-#### Option B: Repository hinzufügen
+#### Schritt 2: Addon installieren
 
-1. **Einstellungen** → **Add-ons** → **Add-on Store** (drei Punkte oben rechts)
-2. **Repositories** auswählen
-3. URL hinzufügen: `https://github.com/TillitschScHocK/DAF---DailyActivityFeed`
-4. Das Addon erscheint nun im Store
+1. Suche im Add-on Store nach **Daily Activity Feed**
+2. Klicke auf **Installieren**
+3. Warte, bis die Installation abgeschlossen ist
+4. Klicke auf **Starten**
+5. Aktiviere **Beim Start starten** (optional)
 
-### 2. Custom Integration Installation
+### Teil 2: Custom Integration Installation
+
+#### Option A: Über HACS (Empfohlen)
+
+1. Öffne **HACS** in Home Assistant
+2. Gehe zu **Integrationen**
+3. Klicke oben rechts auf die drei Punkte ⋮
+4. Wähle **Benutzerdefinierte Repositories**
+5. Füge hinzu:
+   - **Repository**: `https://github.com/TillitschScHocK/DAF---DailyActivityFeed`
+   - **Kategorie**: Integration
+6. Klicke auf **Hinzufügen**
+7. Suche nach **Daily Activity Feed**
+8. Klicke auf **Herunterladen**
+9. Starte Home Assistant neu
+
+#### Option B: Manuell
 
 1. Kopiere den Ordner `custom_components/daily_activity_feed` nach `/config/custom_components/`
 2. Starte Home Assistant neu
-3. Füge zur `configuration.yaml` hinzu:
 
-```yaml
-daily_activity_feed:
-  addon_url: "http://addon-daily-activity-feed:8099"
-  scan_interval: 30
-```
+### Teil 3: Integration einrichten
 
-4. Starte Home Assistant erneut neu
+1. Gehe zu **Einstellungen** → **Geräte & Dienste**
+2. Klicke auf **+ Integration hinzufügen**
+3. Suche nach **Daily Activity Feed**
+4. Gib die Addon-URL ein (Standard: `http://addon-daily-activity-feed:8099`)
+5. Stelle das Aktualisierungsintervall ein (Standard: 30 Sekunden)
+6. Klicke auf **Absenden**
 
-### 3. REST Command einrichten
+✅ Die Sensoren `sensor.daily_activity_today` und `sensor.daily_activity_yesterday` sind jetzt verfügbar!
 
-Füge zur `configuration.yaml` hinzu:
+### Teil 4: REST Command einrichten
+
+Füge zur `configuration.yaml` hinzu (das ist der einzige YAML-Teil):
 
 ```yaml
 rest_command:
@@ -101,6 +121,8 @@ rest_command:
         "image": "{{ image | default('') }}"
       }
 ```
+
+Starte Home Assistant neu.
 
 ## 🚀 Verwendung
 
@@ -317,33 +339,52 @@ Im Addon selbst kannst du folgende Optionen anpassen:
 
 ### Integration Konfiguration
 
-In der `configuration.yaml`:
+Über die GUI (nach der Installation):
 
-```yaml
-daily_activity_feed:
-  addon_url: "http://addon-daily-activity-feed:8099"
-  scan_interval: 30  # Aktualisierung alle 30 Sekunden
-```
+1. **Einstellungen** → **Geräte & Dienste**
+2. Klicke auf **Daily Activity Feed**
+3. Klicke auf **Konfigurieren**
+4. Passe die Einstellungen an:
+   - Addon URL
+   - Aktualisierungsintervall (10-300 Sekunden)
 
 ## 🐛 Troubleshooting
 
 ### Addon startet nicht
 
-1. Prüfe die Logs im Addon
+1. Prüfe die Logs im Addon (Reiter "Logs")
 2. Stelle sicher, dass Port 8099 nicht bereits belegt ist
-3. Prüfe die Berechtigungen für `/data`
+3. Versuche einen Neustart des Addons
+
+**Fehler: "name invalid"**
+→ Dieser Fehler ist behoben. Das Addon baut jetzt lokal vom Dockerfile statt ein externes Image zu laden.
+
+### Integration kann nicht hinzugefügt werden
+
+1. Stelle sicher, dass das Addon läuft
+2. Teste die Verbindung manuell: `http://addon-daily-activity-feed:8099/`
+3. Prüfe die URL in der Konfiguration
 
 ### Sensoren zeigen keine Daten
 
 1. Prüfe, ob das Addon läuft
 2. Teste die API manuell: `http://addon-daily-activity-feed:8099/api/events/today`
-3. Prüfe die Logs der Custom Integration
+3. Prüfe die Logs der Integration unter **Einstellungen** → **System** → **Logs**
+4. Stelle das Aktualisierungsintervall auf mindestens 30 Sekunden
 
 ### Events werden nicht gespeichert
 
-1. Teste den REST Command manuell in den Developer Tools
+1. Teste den REST Command manuell in den Developer Tools → Dienste
 2. Prüfe die Logs des Addons
-3. Stelle sicher, dass der `rest_command` korrekt konfiguriert ist
+3. Stelle sicher, dass der `rest_command` korrekt in der `configuration.yaml` ist
+4. Prüfe das JSON-Format deiner Events
+
+### Integration erscheint nicht in HACS
+
+1. Stelle sicher, dass du **Integrationen** ausgewählt hast (nicht Frontend)
+2. Die Kategorie muss "Integration" sein
+3. Warte 1-2 Minuten nach dem Hinzufügen des Repositories
+4. Starte Home Assistant neu, falls nötig
 
 ## 📄 Datenspeicherung
 
@@ -375,11 +416,13 @@ Die Daten werden automatisch bereinigt:
 - Das Addon läuft nur lokal im Home Assistant Netzwerk
 - Kein externer Zugriff erforderlich
 - Alle Daten bleiben auf deinem System
+- Keine Cloud-Verbindung notwendig
 
 ## 📚 Weitere Ressourcen
 
 - [Home Assistant Dokumentation](https://www.home-assistant.io/)
 - [FastAPI Dokumentation](https://fastapi.tiangolo.com/)
+- [HACS Dokumentation](https://hacs.xyz/)
 - [Issues](https://github.com/TillitschScHocK/DAF---DailyActivityFeed/issues)
 
 ## 👏 Mitwirken
