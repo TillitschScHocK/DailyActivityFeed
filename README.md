@@ -4,10 +4,9 @@
 
 **Persistent event storage for Home Assistant with beautiful dashboard integration**
 
-[![GitHub Release](https://img.shields.io/github/v/release/TillitschScHocK/DAF---DailyActivityFeed?style=for-the-badge&logo=github)](https://github.com/TillitschScHocK/DAF---DailyActivityFeed/releases)
-[![License](https://img.shields.io/github/license/TillitschScHocK/DAF---DailyActivityFeed?style=for-the-badge)](LICENSE)
 [![HACS](https://img.shields.io/badge/HACS-Custom-orange?style=for-the-badge&logo=homeassistant)](https://github.com/hacs/integration)
-[![Donate](https://img.shields.io/badge/Donate-PayPal-blue?style=for-the-badge&logo=paypal)](https://paypal.me/YourPayPalUsername)
+[![License](https://img.shields.io/github/license/TillitschScHocK/DAF---DailyActivityFeed?style=for-the-badge)](LICENSE)
+[![Donate](https://img.shields.io/badge/Donate-PayPal-blue?style=for-the-badge&logo=paypal)](https://paypal.me/Schock07)
 
 [Installation](#-installation) • [Configuration](#%EF%B8%8F-configuration) • [Usage](#-usage) • [API](#-api)
 
@@ -57,7 +56,7 @@ Add to `configuration.yaml` (only YAML needed):
 ```yaml
 rest_command:
   daily_activity_event:
-    url: "http://addon-daily-activity-feed:8099/api/event"
+    url: "http://[HA-IP]/api/event"
     method: POST
     content_type: "application/json"
     payload: >
@@ -87,7 +86,7 @@ Restart Home Assistant. Done! ✅
 ### Integration
 
 Configure via GUI after adding the integration:
-- **Add-on URL**: `http://addon-daily-activity-feed:8099` (default)
+- **Add-on URL**: `http://[HA-IP]:8099` (default)
 - **Scan interval**: 30 seconds (10-300 range)
 
 ---
@@ -209,7 +208,7 @@ Use any type you want, or stick to these conventions:
 → Check logs in add-on tab, ensure port 8099 is free
 
 **Integration not found**  
-→ Verify add-on is running, test `http://addon-daily-activity-feed:8099/`
+→ Verify add-on is running, test `http://[HA-IP]]:8099/`
 
 **No events showing**  
 → Check REST command in `configuration.yaml`, test in Developer Tools → Services
@@ -223,7 +222,7 @@ Use any type you want, or stick to these conventions:
 
 Like this project? Consider supporting development:
 
-[![Donate](https://img.shields.io/badge/Donate-PayPal-blue?style=for-the-badge&logo=paypal)](https://paypal.me/YourPayPalUsername)
+[![Donate](https://img.shields.io/badge/Donate-PayPal-blue?style=for-the-badge&logo=paypal)](https://paypal.me/Schock07)
 
 ---
 

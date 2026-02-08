@@ -39,7 +39,7 @@ Home Assistant integration for the Daily Activity Feed add-on. Provides sensors 
 1. **Settings** → **Devices & Services** → **Add Integration**
 2. Search for **Daily Activity Feed**
 3. Enter configuration:
-   - **Add-on URL**: `http://addon-daily-activity-feed:8099` (default)
+   - **Add-on URL**: `http://[HA-IP]:8099` (default)
    - **Scan Interval**: 30 seconds (range: 10-300)
 
 ### Reconfigure
@@ -129,7 +129,7 @@ template:
 
 ### Sensors show unavailable
 → Check add-on URL in integration settings  
-→ Test add-on API: `http://addon-daily-activity-feed:8099/`
+→ Test add-on API: `http://[HA-IP]:8099/`
 
 ### Old events not clearing
 → The add-on handles cleanup automatically  

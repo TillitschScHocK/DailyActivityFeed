@@ -151,7 +151,7 @@ Data is automatically cleaned:
 ### API not responding
 - Verify add-on is running
 - Check network connectivity
-- Test with: `http://addon-daily-activity-feed:8099/`
+- Test with: `http://[HA-IP]:8099/`
 
 ---
 
