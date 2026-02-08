@@ -1,111 +1,58 @@
-# Daily Activity Feed (DAF) für Home Assistant
+<div align="center">
 
-[![GitHub Release](https://img.shields.io/github/v/release/TillitschScHocK/DAF---DailyActivityFeed)](https://github.com/TillitschScHocK/DAF---DailyActivityFeed/releases)
-[![License](https://img.shields.io/github/license/TillitschScHocK/DAF---DailyActivityFeed)](LICENSE)
-[![HACS](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/hacs/integration)
+# Daily Activity Feed
 
-Ein persistentes Activity Feed System für Home Assistant, das Smart Home Ereignisse speichert und übersichtlich im Dashboard darstellt.
+**Persistent event storage for Home Assistant with beautiful dashboard integration**
 
-## ✨ Features
+[![GitHub Release](https://img.shields.io/github/v/release/TillitschScHocK/DAF---DailyActivityFeed?style=for-the-badge&logo=github)](https://github.com/TillitschScHocK/DAF---DailyActivityFeed/releases)
+[![License](https://img.shields.io/github/license/TillitschScHocK/DAF---DailyActivityFeed?style=for-the-badge)](LICENSE)
+[![HACS](https://img.shields.io/badge/HACS-Custom-orange?style=for-the-badge&logo=homeassistant)](https://github.com/hacs/integration)
+[![Donate](https://img.shields.io/badge/Donate-PayPal-blue?style=for-the-badge&logo=paypal)](https://paypal.me/YourPayPalUsername)
 
-- **Persistente Speicherung** aller Ereignisse (heute und gestern)
-- **Automatische Bereinigung** alter Daten
-- **REST API** zum einfachen Hinzufügen von Events
-- **Custom Integration** mit Sensoren für Home Assistant
-- **HACS-ready** mit Config Flow (keine YAML-Konfiguration nötig)
-- **Dashboard-Integration** mit flexiblen Lovelace Cards
-- **Bild-Support** für Snapshots (z.B. von Kameras)
-- **Typisierte Events** (doorbell, door, energy, custom)
+[Installation](#-installation) • [Configuration](#%EF%B8%8F-configuration) • [Usage](#-usage) • [API](#-api)
 
-## 🏗️ Architektur
+</div>
 
-```
-┌────────────────────────┐
-│   Home Assistant       │
-│   Automations          │
-└────────┬───────────────┘
-         │
-         │ HTTP POST
-         │
-         ▼
-┌────────────────────────┐
-│  DAF Addon (FastAPI)  │
-│  - REST API           │
-│  - JSON Store         │
-│  - Auto Cleanup       │
-└────────┬───────────────┘
-         │
-         │ HTTP GET
-         │
-         ▼
-┌────────────────────────┐
-│  Custom Integration   │
-│  - sensor.today       │
-│  - sensor.yesterday   │
-└────────┬───────────────┘
-         │
-         ▼
-┌────────────────────────┐
-│  Lovelace Dashboard   │
-│  - Activity Feed      │
-└────────────────────────┘
-```
+---
 
-## 📦 Installation
+## 🎯 What is this?
 
-### Teil 1: Addon Installation
+Daily Activity Feed turns your Home Assistant into a timeline machine. Store and display events like doorbell rings, door openings, or energy alerts with optional camera snapshots - all in a beautiful, persistent feed.
 
-#### Schritt 1: Repository hinzufügen
+### Why you'll love it
 
-1. Gehe zu **Einstellungen** → **Add-ons** → **Add-on Store**
-2. Klicke oben rechts auf die drei Punkte ⋮
-3. Wähle **Repositories**
-4. Füge hinzu: `https://github.com/TillitschScHocK/DAF---DailyActivityFeed`
-5. Klicke auf **Hinzufügen**
+✅ **Zero data loss** - Events survive restarts  
+✅ **Smart cleanup** - Auto-removes events older than yesterday  
+✅ **Image support** - Attach camera snapshots to events  
+✅ **HACS ready** - Install via GUI, no YAML hassle  
+✅ **REST API** - Dead simple integration with automations  
+✅ **Lightweight** - FastAPI backend, JSON storage  
 
-#### Schritt 2: Addon installieren
+---
 
-1. Suche im Add-on Store nach **Daily Activity Feed**
-2. Klicke auf **Installieren**
-3. Warte, bis die Installation abgeschlossen ist
-4. Klicke auf **Starten**
-5. Aktiviere **Beim Start starten** (optional)
+## 🚀 Installation
 
-### Teil 2: Custom Integration Installation
+### Step 1: Add-on
 
-#### Option A: Über HACS (Empfohlen)
+1. **Settings** → **Add-ons** → **Add-on Store** → **⋮** (menu) → **Repositories**
+2. Add: `https://github.com/TillitschScHocK/DAF---DailyActivityFeed`
+3. Install **Daily Activity Feed** from the store
+4. Start the add-on
 
-1. Öffne **HACS** in Home Assistant
-2. Gehe zu **Integrationen**
-3. Klicke oben rechts auf die drei Punkte ⋮
-4. Wähle **Benutzerdefinierte Repositories**
-5. Füge hinzu:
-   - **Repository**: `https://github.com/TillitschScHocK/DAF---DailyActivityFeed`
-   - **Kategorie**: Integration
-6. Klicke auf **Hinzufügen**
-7. Suche nach **Daily Activity Feed**
-8. Klicke auf **Herunterladen**
-9. Starte Home Assistant neu
+### Step 2: Integration
 
-#### Option B: Manuell
+1. Open **HACS** → **Integrations** → **⋮** → **Custom repositories**
+2. Add:
+   - Repository: `https://github.com/TillitschScHocK/DAF---DailyActivityFeed`
+   - Category: **Integration**
+3. Download **Daily Activity Feed**
+4. Restart Home Assistant
+5. **Settings** → **Devices & Services** → **Add Integration**
+6. Search for **Daily Activity Feed** and configure
 
-1. Kopiere den Ordner `custom_components/daily_activity_feed` nach `/config/custom_components/`
-2. Starte Home Assistant neu
+### Step 3: REST Command
 
-### Teil 3: Integration einrichten
-
-1. Gehe zu **Einstellungen** → **Geräte & Dienste**
-2. Klicke auf **+ Integration hinzufügen**
-3. Suche nach **Daily Activity Feed**
-4. Gib die Addon-URL ein (Standard: `http://addon-daily-activity-feed:8099`)
-5. Stelle das Aktualisierungsintervall ein (Standard: 30 Sekunden)
-6. Klicke auf **Absenden**
-
-✅ Die Sensoren `sensor.daily_activity_today` und `sensor.daily_activity_yesterday` sind jetzt verfügbar!
-
-### Teil 4: REST Command einrichten
-
-Füge zur `configuration.yaml` hinzu (das ist der einzige YAML-Teil):
+Add to `configuration.yaml` (only YAML needed):
 
 ```yaml
 rest_command:
@@ -122,111 +69,82 @@ rest_command:
       }
 ```
 
-Starte Home Assistant neu.
+Restart Home Assistant. Done! ✅
 
-## 🚀 Verwendung
+---
 
-### Sensoren
+## ⚙️ Configuration
 
-Nach der Installation stehen dir zwei Sensoren zur Verfügung:
+### Add-on Options
 
-- `sensor.daily_activity_today` (Anzahl der Events heute)
-- `sensor.daily_activity_yesterday` (Anzahl der Events gestern)
+```json
+{
+  "port": 8099,
+  "max_events_per_day": 100
+}
+```
 
-Jeder Sensor hat ein Attribut `entries`, das alle Events enthält:
+### Integration
+
+Configure via GUI after adding the integration:
+- **Add-on URL**: `http://addon-daily-activity-feed:8099` (default)
+- **Scan interval**: 30 seconds (10-300 range)
+
+---
+
+## 💻 Usage
+
+### Sensors
+
+Two sensors are created automatically:
+- `sensor.daily_activity_today` - Today's event count
+- `sensor.daily_activity_yesterday` - Yesterday's event count
+
+All events are stored in the `entries` attribute:
 
 ```yaml
-state: 5
+state: 3
 attributes:
   entries:
     - type: doorbell
-      title: Türklingel
-      text: Es wurde an der Haustür geklingelt
+      title: Doorbell
+      text: Someone rang the doorbell
       timestamp: "14:32:15"
       date: "2026-02-08"
-      image: /local/doorbell_latest.jpg
-    - type: door
-      title: Haustür
-      text: Die Haustür wurde geöffnet
-      timestamp: "12:15:43"
-      date: "2026-02-08"
+      image: /local/doorbell_snapshot.jpg
 ```
 
-### Automationen
-
-#### Beispiel 1: Türklingel mit Snapshot
+### Example Automation
 
 ```yaml
-alias: Türklingel Activity Feed
+alias: Doorbell with Snapshot
 trigger:
   - platform: state
     entity_id: binary_sensor.doorbell
     to: "on"
 action:
-  - service: notify.mobile_app_handy
-    data:
-      message: "Es wurde geklingelt"
+  # Take snapshot
   - service: camera.snapshot
     target:
-      entity_id: camera.doorbell
+      entity_id: camera.front_door
     data:
-      filename: /config/www/doorbell_latest.jpg
+      filename: /config/www/doorbell_{{ now().strftime('%Y%m%d_%H%M%S') }}.jpg
+  
+  # Send to feed
   - service: rest_command.daily_activity_event
     data:
       type: "doorbell"
-      title: "Türklingel"
-      text: "Es wurde an der Haustür geklingelt"
-      image: "/local/doorbell_latest.jpg"
+      title: "Doorbell"
+      text: "Someone rang the doorbell at {{ now().strftime('%H:%M') }}"
+      image: "/local/doorbell_{{ now().strftime('%Y%m%d_%H%M%S') }}.jpg"
 ```
 
-#### Beispiel 2: Haustür geöffnet
-
-```yaml
-alias: Haustür Activity Feed
-trigger:
-  - platform: state
-    entity_id: binary_sensor.front_door
-    to: "on"
-action:
-  - service: notify.mobile_app_handy
-    data:
-      message: "Die Haustür wurde geöffnet"
-  - service: rest_command.daily_activity_event
-    data:
-      type: "door"
-      title: "Haustür"
-      text: "Die Haustür wurde um {{ now().strftime('%H:%M') }} Uhr geöffnet"
-```
-
-#### Beispiel 3: Hoher Energieverbrauch
-
-```yaml
-alias: Hoher Verbrauch Activity Feed
-trigger:
-  - platform: numeric_state
-    entity_id: sensor.house_power
-    above: 5000
-    for:
-      minutes: 5
-action:
-  - service: notify.mobile_app_handy
-    data:
-      message: "Hausverbrauch überschreitet 5 kW"
-  - service: rest_command.daily_activity_event
-    data:
-      type: "energy"
-      title: "Hoher Verbrauch"
-      text: "Aktueller Hausverbrauch: {{ states('sensor.house_power') }} W"
-```
-
-### Dashboard Integration
-
-#### Einfache Markdown Card
+### Dashboard Card
 
 ```yaml
 type: markdown
 content: |
-  ## 📋 Aktivitäten Heute
+  ## 📋 Activity Feed
   
   {% set events = state_attr('sensor.daily_activity_today', 'entries') %}
   {% if events and events|length > 0 %}
@@ -235,208 +153,90 @@ content: |
   **{{ event.timestamp }}** - {{ event.title }}
   {{ event.text }}
       {% if event.image %}
-  ![]({{ event.image }})
+  <img src="{{ event.image }}" style="width: 100%; max-width: 400px; border-radius: 8px; margin-top: 8px;">
       {% endif %}
     {% endfor %}
   {% else %}
-  _Keine Aktivitäten heute_
+  *No events today*
   {% endif %}
 ```
 
-#### Mit custom:button-card (erfordert HACS)
+---
 
-```yaml
-type: vertical-stack
-cards:
-  - type: custom:button-card
-    name: Aktivitäten Heute
-    icon: mdi:calendar-today
-    entity: sensor.daily_activity_today
-    show_state: true
-    state_display: '[[[ return `${entity.state} Ereignisse` ]]]'
-```
+## 🔧 API
 
-Weitere Beispiele findest du im Ordner [`examples/`](examples/).
+### POST `/api/event`
+Create a new event
 
-## 🔧 API Dokumentation
-
-### Endpoints
-
-#### POST /api/event
-
-Fügt ein neues Event hinzu.
-
-**Request Body:**
 ```json
 {
   "type": "doorbell",
-  "title": "Türklingel",
-  "text": "Es wurde geklingelt",
+  "title": "Doorbell",
+  "text": "Someone rang the doorbell",
   "image": "/local/snapshot.jpg"
 }
 ```
 
-**Response:**
-```json
-{
-  "status": "success",
-  "event": {
-    "type": "doorbell",
-    "title": "Türklingel",
-    "text": "Es wurde geklingelt",
-    "image": "/local/snapshot.jpg",
-    "timestamp": "14:32:15",
-    "date": "2026-02-08"
-  }
-}
-```
+### GET `/api/events/today`
+Retrieve today's events
 
-#### GET /api/events/today
+### GET `/api/events/yesterday`
+Retrieve yesterday's events
 
-Gibt alle Events von heute zurück.
-
-**Response:**
-```json
-{
-  "date": "2026-02-08",
-  "count": 5,
-  "events": [...]
-}
-```
-
-#### GET /api/events/yesterday
-
-Gibt alle Events von gestern zurück.
-
-#### DELETE /api/events/{day}
-
-Löscht alle Events eines Tages (`today` oder `yesterday`).
-
-## 📝 Event Types
-
-Du kannst beliebige Event Types verwenden. Empfohlene Standard-Typen:
-
-- `doorbell` (Türklingel)
-- `door` (Tür geöffnet/geschlossen)
-- `energy` (Energieereignisse)
-- `security` (Sicherheitsereignisse)
-- `notification` (Allgemeine Benachrichtigungen)
-- `device` (Geräte-Events)
-- `custom` (Benutzerdefiniert)
-
-## ⚙️ Konfiguration
-
-### Addon Konfiguration
-
-Im Addon selbst kannst du folgende Optionen anpassen:
-
-```json
-{
-  "max_events_per_day": 100,
-  "port": 8099
-}
-```
-
-### Integration Konfiguration
-
-Über die GUI (nach der Installation):
-
-1. **Einstellungen** → **Geräte & Dienste**
-2. Klicke auf **Daily Activity Feed**
-3. Klicke auf **Konfigurieren**
-4. Passe die Einstellungen an:
-   - Addon URL
-   - Aktualisierungsintervall (10-300 Sekunden)
-
-## 🐛 Troubleshooting
-
-### Addon startet nicht
-
-1. Prüfe die Logs im Addon (Reiter "Logs")
-2. Stelle sicher, dass Port 8099 nicht bereits belegt ist
-3. Versuche einen Neustart des Addons
-
-**Fehler: "name invalid"**
-→ Dieser Fehler ist behoben. Das Addon baut jetzt lokal vom Dockerfile statt ein externes Image zu laden.
-
-### Integration kann nicht hinzugefügt werden
-
-1. Stelle sicher, dass das Addon läuft
-2. Teste die Verbindung manuell: `http://addon-daily-activity-feed:8099/`
-3. Prüfe die URL in der Konfiguration
-
-### Sensoren zeigen keine Daten
-
-1. Prüfe, ob das Addon läuft
-2. Teste die API manuell: `http://addon-daily-activity-feed:8099/api/events/today`
-3. Prüfe die Logs der Integration unter **Einstellungen** → **System** → **Logs**
-4. Stelle das Aktualisierungsintervall auf mindestens 30 Sekunden
-
-### Events werden nicht gespeichert
-
-1. Teste den REST Command manuell in den Developer Tools → Dienste
-2. Prüfe die Logs des Addons
-3. Stelle sicher, dass der `rest_command` korrekt in der `configuration.yaml` ist
-4. Prüfe das JSON-Format deiner Events
-
-### Integration erscheint nicht in HACS
-
-1. Stelle sicher, dass du **Integrationen** ausgewählt hast (nicht Frontend)
-2. Die Kategorie muss "Integration" sein
-3. Warte 1-2 Minuten nach dem Hinzufügen des Repositories
-4. Starte Home Assistant neu, falls nötig
-
-## 📄 Datenspeicherung
-
-Alle Events werden in `/data/events.json` gespeichert:
-
-```json
-{
-  "today": [
-    {
-      "type": "doorbell",
-      "title": "Türklingel",
-      "text": "Es wurde geklingelt",
-      "timestamp": "14:32:15",
-      "date": "2026-02-08",
-      "image": "/local/doorbell.jpg"
-    }
-  ],
-  "yesterday": [...]
-}
-```
-
-Die Daten werden automatisch bereinigt:
-- Events älter als gestern werden gelöscht
-- Beim Start des Addons
-- Bei jedem neuen Event
-
-## 🔐 Sicherheit
-
-- Das Addon läuft nur lokal im Home Assistant Netzwerk
-- Kein externer Zugriff erforderlich
-- Alle Daten bleiben auf deinem System
-- Keine Cloud-Verbindung notwendig
-
-## 📚 Weitere Ressourcen
-
-- [Home Assistant Dokumentation](https://www.home-assistant.io/)
-- [FastAPI Dokumentation](https://fastapi.tiangolo.com/)
-- [HACS Dokumentation](https://hacs.xyz/)
-- [Issues](https://github.com/TillitschScHocK/DAF---DailyActivityFeed/issues)
-
-## 👏 Mitwirken
-
-Beiträge sind willkommen! Bitte erstelle einen Pull Request oder öffne ein Issue.
-
-## 📜 Lizenz
-
-MIT License - siehe [LICENSE](LICENSE) Datei.
-
-## ❤️ Danksagungen
-
-Erstellt mit Home Assistant, FastAPI und Liebe zum Detail.
+### DELETE `/api/events/{day}`
+Clear events (`day` = `today` or `yesterday`)
 
 ---
 
-**Hinweis:** Dieses Projekt befindet sich in aktiver Entwicklung. Feedback und Verbesserungsvorschläge sind herzlich willkommen!
+## 📝 Event Types
+
+Use any type you want, or stick to these conventions:
+
+| Type | Description |
+|------|-------------|
+| `doorbell` | Doorbell pressed |
+| `door` | Door opened/closed |
+| `energy` | Energy alerts |
+| `security` | Security events |
+| `device` | Device events |
+| `custom` | Anything else |
+
+---
+
+## 🐛 Troubleshooting
+
+**Add-on won't start**  
+→ Check logs in add-on tab, ensure port 8099 is free
+
+**Integration not found**  
+→ Verify add-on is running, test `http://addon-daily-activity-feed:8099/`
+
+**No events showing**  
+→ Check REST command in `configuration.yaml`, test in Developer Tools → Services
+
+**HACS integration missing**  
+→ Ensure category is "Integration", wait 2 minutes, restart HA
+
+---
+
+## ❤️ Support
+
+Like this project? Consider supporting development:
+
+[![Donate](https://img.shields.io/badge/Donate-PayPal-blue?style=for-the-badge&logo=paypal)](https://paypal.me/YourPayPalUsername)
+
+---
+
+## 📜 License
+
+MIT License - see [LICENSE](LICENSE)
+
+---
+
+<div align="center">
+
+**Made with ❤️ for Home Assistant**
+
+[Report Bug](https://github.com/TillitschScHocK/DAF---DailyActivityFeed/issues) • [Request Feature](https://github.com/TillitschScHocK/DAF---DailyActivityFeed/issues)
+
+</div>
