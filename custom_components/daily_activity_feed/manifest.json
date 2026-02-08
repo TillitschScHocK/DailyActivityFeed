@@ -2,7 +2,7 @@
   "domain": "daily_activity_feed",
   "name": "Daily Activity Feed",
   "codeowners": ["@TillitschScHocK"],
-  "config_flow": false,
+  "config_flow": true,
   "documentation": "https://github.com/TillitschScHocK/DAF---DailyActivityFeed",
   "iot_class": "local_polling",
   "issue_tracker": "https://github.com/TillitschScHocK/DAF---DailyActivityFeed/issues",

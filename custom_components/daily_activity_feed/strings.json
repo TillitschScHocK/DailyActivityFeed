@@ -1,0 +1,33 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Daily Activity Feed konfigurieren",
+        "description": "Gebe die URL des Daily Activity Feed Addons an.",
+        "data": {
+          "addon_url": "Addon URL",
+          "scan_interval": "Aktualisierungsintervall (Sekunden)"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Verbindung zum Addon fehlgeschlagen. Stelle sicher, dass das Addon l\u00e4uft.",
+      "unknown": "Ein unbekannter Fehler ist aufgetreten."
+    },
+    "abort": {
+      "already_configured": "Diese Integration wurde bereits konfiguriert."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Daily Activity Feed Optionen",
+        "description": "Konfiguriere die Einstellungen f\u00fcr Daily Activity Feed.",
+        "data": {
+          "addon_url": "Addon URL",
+          "scan_interval": "Aktualisierungsintervall (Sekunden)"
+        }
+      }
+    }
+  }
+}
