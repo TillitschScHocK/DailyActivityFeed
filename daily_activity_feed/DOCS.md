@@ -1,30 +1,32 @@
-# Daily Activity Feed Add-on
+# Daily Activity Feed Add-on Documentation
 
-## About
+## Quick Start
 
-The Daily Activity Feed add-on provides a persistent storage and API for Home Assistant events. It stores events from today and yesterday, automatically cleaning up older entries.
+1. Install the add-on from the add-on store
+2. Configure port and event limits (optional)
+3. Start the add-on
+4. Add REST command to `configuration.yaml`
+5. Create automations to send events
 
-## Features
+## Configuration Options
 
-- REST API for event submission
-- Persistent JSON-based storage
-- Automatic cleanup of old events
-- Support for text and image attachments
-- Integration with Home Assistant sensors
+### `port` (integer)
+**Default:** 8099  
+**Range:** 8000-9000  
+Port where the API will listen for requests.
 
-## Configuration
+### `max_events_per_day` (integer)
+**Default:** 100  
+**Range:** 1-1000  
+Maximum number of events to store per day. Older events are automatically removed when limit is reached.
 
-### Options
+## REST API
 
-- **port** (integer): API port (default: 8099)
-- **max_events_per_day** (integer): Maximum events to store per day (default: 100)
+### Add Event
+```http
+POST /api/event
+Content-Type: application/json
 
-## API Endpoints
-
-### POST /api/event
-Add a new event
-
-```json
 {
   "type": "doorbell",
   "title": "Doorbell",
@@ -33,46 +35,109 @@ Add a new event
 }
 ```
 
-### GET /api/events/today
-Retrieve today's events
-
-### GET /api/events/yesterday
-Retrieve yesterday's events
-
-### DELETE /api/events/{day}
-Clear events for today or yesterday
-
-## Usage
-
-Configure the REST command in your `configuration.yaml`:
-
-```yaml
-rest_command:
-  daily_activity_event:
-    url: "http://addon-daily-activity-feed:8099/api/event"
-    method: POST
-    content_type: "application/json"
-    payload: >
-      {
-        "type": "{{ type }}",
-        "title": "{{ title }}",
-        "text": "{{ text }}",
-        "image": "{{ image | default('') }}"
-      }
+**Response:**
+```json
+{
+  "status": "success",
+  "event": {
+    "type": "doorbell",
+    "title": "Doorbell",
+    "text": "Someone rang the doorbell",
+    "image": "/local/snapshot.jpg",
+    "timestamp": "14:32:15",
+    "date": "2026-02-08"
+  }
+}
 ```
 
-Then use it in your automations:
-
-```yaml
-action:
-  - service: rest_command.daily_activity_event
-    data:
-      type: "doorbell"
-      title: "Doorbell"
-      text: "Someone rang the doorbell"
+### Get Events
+```http
+GET /api/events/today
+GET /api/events/yesterday
 ```
+
+### Clear Events
+```http
+DELETE /api/events/today
+DELETE /api/events/yesterday
+```
+
+## Event Fields
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `type` | string | Yes | Event category (e.g., doorbell, door, energy) |
+| `title` | string | Yes | Short event title |
+| `text` | string | Yes | Event description |
+| `image` | string | No | Path to image (e.g., /local/snapshot.jpg) |
+
+Server automatically adds:
+- `timestamp` - Time in HH:MM:SS format
+- `date` - Date in YYYY-MM-DD format
+
+## Data Storage
+
+Events are stored in `/data/events.json`:
+
+```json
+{
+  "today": [
+    {
+      "type": "doorbell",
+      "title": "Doorbell",
+      "text": "Someone rang the doorbell",
+      "timestamp": "14:32:15",
+      "date": "2026-02-08",
+      "image": "/local/snapshot.jpg"
+    }
+  ],
+  "yesterday": []
+}
+```
+
+## Automatic Cleanup
+
+The add-on automatically:
+- Moves today's events to yesterday at midnight
+- Deletes events older than yesterday
+- Runs cleanup on startup and with each new event
+- Enforces max_events_per_day limit
+
+## Logs
+
+Minimal, clean logging for easy monitoring:
+
+```
+=========================================
+Daily Activity Feed API
+=========================================
+Port: 8099
+Max events/day: 100
+Data: /data/events.json
+Loaded: 6 today, 0 yesterday
+Ready to accept events
+=========================================
+
+✓ Event: [doorbell] Doorbell
+✓ Event: [door] Front Door
+```
+
+## Troubleshooting
+
+### Port Already in Use
+Change the `port` option to a different value (e.g., 8100).
+
+### Cannot Connect to Add-on
+1. Verify add-on is running
+2. Check logs for errors
+3. Test with: `http://addon-daily-activity-feed:8099/`
+
+### Events Not Saving
+1. Check add-on logs
+2. Verify JSON format in REST command
+3. Ensure /data directory is writable
 
 ## Support
 
-For issues and feature requests, please visit:
+For help and issues:
 https://github.com/TillitschScHocK/DAF---DailyActivityFeed/issues
