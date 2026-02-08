@@ -1,23 +1,26 @@
-FROM python:3.11-alpine
+ARG BUILD_FROM
+FROM ${BUILD_FROM}
+
+# Install requirements
+RUN apk add --no-cache \
+    python3 \
+    py3-pip \
+    tzdata
 
 WORKDIR /app
 
-# Install dependencies
-RUN apk add --no-cache tzdata
-
-# Copy requirements
+# Copy requirements and install
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip3 install --no-cache-dir -r requirements.txt
 
-# Copy application files
+# Copy application
 COPY app.py .
 COPY run.sh .
 
-# Make run script executable
-RUN chmod +x /app/run.sh
+# Make executable
+RUN chmod a+x /app/run.sh
 
 # Expose port
 EXPOSE 8099
 
-# Run the application
 CMD ["/app/run.sh"]
