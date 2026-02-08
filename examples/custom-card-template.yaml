@@ -1,0 +1,38 @@
+# Beispiel mit custom:button-card (benötigt HACS Installation)
+type: vertical-stack
+cards:
+  - type: custom:button-card
+    name: Aktivitäten Heute
+    icon: mdi:calendar-today
+    show_state: true
+    entity: sensor.daily_activity_today
+    styles:
+      card:
+        - background: var(--primary-background-color)
+        - border-radius: 12px
+      name:
+        - font-size: 18px
+        - font-weight: bold
+    state_display: '[[[ return `${entity.state} Ereignisse` ]]]'
+  
+  - type: custom:auto-entities
+    card:
+      type: entities
+      style: |
+        ha-card {
+          border-radius: 12px;
+        }
+    filter:
+      template: |
+        {% set events = state_attr('sensor.daily_activity_today', 'entries') %}
+        {% set ns = namespace(items=[]) %}
+        {% if events %}
+          {% for event in events %}
+            {% set ns.items = ns.items + [{
+              'type': 'custom:hui-element',
+              'card_type': 'markdown',
+              'content': '**' + event.timestamp + '** - ' + event.title + '\n' + event.text
+            }] %}
+          {% endfor %}
+        {% endif %}
+        {{ ns.items }}

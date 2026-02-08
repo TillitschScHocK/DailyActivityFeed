@@ -1,0 +1,24 @@
+# Hoher Energieverbrauch Event
+alias: Hoher Verbrauch Activity Feed
+description: Warnt bei hohem Energieverbrauch und speichert im Feed
+trigger:
+  - platform: numeric_state
+    entity_id: sensor.house_power
+    above: 5000
+    for:
+      minutes: 5
+action:
+  # Push Notification
+  - service: notify.mobile_app_handy
+    data:
+      message: "Hausverbrauch überschreitet 5 kW"
+      title: "Hoher Verbrauch"
+  
+  # Event an Daily Activity Feed senden
+  - service: rest_command.daily_activity_event
+    data:
+      type: "energy"
+      title: "Hoher Verbrauch"
+      text: "Aktueller Hausverbrauch: {{ states('sensor.house_power') }} W"
+
+mode: single

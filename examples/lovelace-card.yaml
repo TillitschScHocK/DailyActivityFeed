@@ -1,0 +1,18 @@
+# Beispiel für eine einfache Markdown-Card
+type: markdown
+content: |
+  ## 📋 Aktivitäten Heute
+  
+  {% set events = state_attr('sensor.daily_activity_today', 'entries') %}
+  {% if events and events|length > 0 %}
+    {% for event in events %}
+  ---
+  **{{ event.timestamp }}** - {{ event.title }}
+  {{ event.text }}
+      {% if event.image %}
+  ![]({{ event.image }})
+      {% endif %}
+    {% endfor %}
+  {% else %}
+  _Keine Aktivitäten heute_
+  {% endif %}
