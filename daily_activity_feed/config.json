@@ -1,0 +1,25 @@
+{
+  "name": "Daily Activity Feed",
+  "version": "1.0.0",
+  "slug": "daily_activity_feed",
+  "description": "Persistent activity feed for Home Assistant events",
+  "arch": ["aarch64", "amd64", "armhf", "armv7", "i386"],
+  "startup": "application",
+  "boot": "auto",
+  "init": false,
+  "ports": {
+    "8099": 8099
+  },
+  "ports_description": {
+    "8099": "HTTP API Port"
+  },
+  "options": {
+    "max_events_per_day": 100,
+    "port": 8099
+  },
+  "schema": {
+    "max_events_per_day": "int(1,1000)",
+    "port": "int(8000,9000)"
+  },
+  "image": "ghcr.io/{arch}-daily-activity-feed"
+}
