@@ -1,0 +1,3 @@
+# This file should be a copy of icon.png
+# Please manually copy icon.png to logo.png or run:
+# cp custom_components/daily_activity_feed/icon.png custom_components/daily_activity_feed/logo.png
