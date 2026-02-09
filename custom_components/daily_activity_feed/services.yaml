@@ -1,0 +1,81 @@
+add_event:
+  name: Event hinzufügen
+  description: Fügt ein neues Event zum Daily Activity Feed hinzu
+  fields:
+    type:
+      name: Typ
+      description: Art des Events
+      required: true
+      example: "doorbell"
+      selector:
+        select:
+          options:
+            - label: "Türklingel"
+              value: "doorbell"
+            - label: "Tür"
+              value: "door"
+            - label: "Energie"
+              value: "energy"
+            - label: "Sicherheit"
+              value: "security"
+            - label: "Gerät"
+              value: "device"
+            - label: "Benutzerdefiniert"
+              value: "custom"
+    
+    title:
+      name: Titel
+      description: Kurzer Titel für das Event
+      required: true
+      example: "Türklingel"
+      selector:
+        text:
+    
+    text:
+      name: Beschreibung
+      description: Detaillierte Beschreibung des Events
+      required: true
+      example: "Jemand hat um 14:32 Uhr geklingelt"
+      selector:
+        text:
+          multiline: true
+    
+    image:
+      name: Bild-URL
+      description: "Optionale Bild-URL (z.B. /local/snapshot.jpg)"
+      required: false
+      example: "/local/doorbell_snapshot.jpg"
+      selector:
+        text:
+    
+    camera_entity:
+      name: Kamera-Entity
+      description: "Automatischer Snapshot von dieser Kamera (Alternative zu image)"
+      required: false
+      example: "camera.front_door"
+      selector:
+        entity:
+          domain: camera
+    
+    timestamp:
+      name: Zeitstempel
+      description: "Optionaler eigener Zeitstempel (HH:MM:SS Format)"
+      required: false
+      example: "14:32:15"
+      selector:
+        text:
+    
+    priority:
+      name: Priorität
+      description: "Priorität des Events"
+      required: false
+      default: "normal"
+      selector:
+        select:
+          options:
+            - label: "Niedrig"
+              value: "low"
+            - label: "Normal"
+              value: "normal"
+            - label: "Hoch"
+              value: "high"
