@@ -1,56 +1,43 @@
 add_event:
-  name: Event hinzufügen
-  description: Fügt ein neues Event zum Daily Activity Feed hinzu
+  name: Add Event
+  description: Add a new event to the Daily Activity Feed
   fields:
     type:
-      name: Typ
-      description: Art des Events
+      name: Type
+      description: Event type (e.g. doorbell, door, energy, security, custom)
       required: true
       example: "doorbell"
       selector:
-        select:
-          options:
-            - label: "Türklingel"
-              value: "doorbell"
-            - label: "Tür"
-              value: "door"
-            - label: "Energie"
-              value: "energy"
-            - label: "Sicherheit"
-              value: "security"
-            - label: "Gerät"
-              value: "device"
-            - label: "Benutzerdefiniert"
-              value: "custom"
+        text:
     
     title:
-      name: Titel
-      description: Kurzer Titel für das Event
+      name: Title
+      description: Short title for the event
       required: true
-      example: "Türklingel"
+      example: "Doorbell"
       selector:
         text:
     
     text:
-      name: Beschreibung
-      description: Detaillierte Beschreibung des Events
+      name: Description
+      description: Detailed description of the event
       required: true
-      example: "Jemand hat um 14:32 Uhr geklingelt"
+      example: "Someone rang the doorbell at 2:32 PM"
       selector:
         text:
           multiline: true
     
     image:
-      name: Bild-URL
-      description: "Optionale Bild-URL (z.B. /local/snapshot.jpg)"
+      name: Image URL
+      description: "Optional image URL (e.g. /local/snapshot.jpg)"
       required: false
       example: "/local/doorbell_snapshot.jpg"
       selector:
         text:
     
     camera_entity:
-      name: Kamera-Entity
-      description: "Automatischer Snapshot von dieser Kamera (Alternative zu image)"
+      name: Camera Entity
+      description: "Automatic snapshot from this camera (alternative to image)"
       required: false
       example: "camera.front_door"
       selector:
@@ -58,24 +45,24 @@ add_event:
           domain: camera
     
     timestamp:
-      name: Zeitstempel
-      description: "Optionaler eigener Zeitstempel (HH:MM:SS Format)"
+      name: Timestamp
+      description: "Optional custom timestamp (HH:MM:SS format)"
       required: false
       example: "14:32:15"
       selector:
         text:
     
     priority:
-      name: Priorität
-      description: "Priorität des Events"
+      name: Priority
+      description: "Event priority level"
       required: false
       default: "normal"
       selector:
         select:
           options:
-            - label: "Niedrig"
+            - label: "Low"
               value: "low"
             - label: "Normal"
               value: "normal"
-            - label: "Hoch"
+            - label: "High"
               value: "high"
