@@ -4,11 +4,13 @@
 
 ## Overview
 
-Home Assistant integration for the Daily Activity Feed add-on. Provides sensors to display event feeds in your dashboard.
+Home Assistant integration for the Daily Activity Feed add-on. Provides sensors to display event feeds in your dashboard **and a native action to add events from automations**.
 
 ### What it does
 
 📊 **Creates Sensors** - `sensor.daily_activity_today` and `sensor.daily_activity_yesterday`  
+🎬 **Native Action** - `daily_activity_feed.add_event` for automations (no YAML config needed!)  
+📷 **Camera Integration** - Automatic snapshots via `camera_entity` parameter  
 🔄 **Auto Updates** - Polls the add-on API at configurable intervals  
 ⚙️ **GUI Config** - No YAML configuration needed  
 📋 **Rich Attributes** - All events stored in sensor attributes  
@@ -39,7 +41,7 @@ Home Assistant integration for the Daily Activity Feed add-on. Provides sensors 
 1. **Settings** → **Devices & Services** → **Add Integration**
 2. Search for **Daily Activity Feed**
 3. Enter configuration:
-   - **Add-on URL**: `http://[HA-IP]:8099` (default)
+   - **Add-on URL**: `http://addon-daily-activity-feed:8099` (default)
    - **Scan Interval**: 30 seconds (range: 10-300)
 
 ### Reconfigure
@@ -48,6 +50,39 @@ Change settings anytime:
 1. **Settings** → **Devices & Services**
 2. Click on **Daily Activity Feed**
 3. Click **Configure**
+
+---
+
+## Actions
+
+### `daily_activity_feed.add_event`
+
+**NEW in v1.1.0** - Add events directly from automations without any YAML configuration!
+
+**Parameters:**
+
+| Parameter | Required | Description |
+|-----------|----------|-------------|
+| `type` | ✅ | Event type (free text - any value you want) |
+| `title` | ✅ | Short title |
+| `text` | ✅ | Event description |
+| `image` | ⬜ | Image URL (e.g. `/local/snapshot.jpg`) |
+| `camera_entity` | ⬜ | Camera entity for automatic snapshot |
+| `timestamp` | ⬜ | Custom timestamp (HH:MM:SS) |
+| `priority` | ⬜ | Priority level (`low`, `normal`, `high`) |
+
+**Example:**
+
+```yaml
+action:
+  - action: daily_activity_feed.add_event
+    data:
+      type: "doorbell"
+      title: "Doorbell"
+      text: "Someone rang at {{ now().strftime('%H:%M') }}"
+      camera_entity: camera.front_door
+      priority: "high"
+```
 
 ---
 
@@ -131,6 +166,15 @@ template:
 → Check add-on URL in integration settings  
 → Test add-on API: `http://[HA-IP]:8099/`
 
+### Action not available
+→ Check Developer Tools → Actions  
+→ Search for `daily_activity_feed.add_event`  
+→ Restart Home Assistant if just installed
+
+### Camera snapshot fails
+→ Ensure camera entity exists  
+→ Check `/config/www/` directory permissions
+
 ### Old events not clearing
 → The add-on handles cleanup automatically  
 → Check add-on logs for errors
@@ -139,10 +183,23 @@ template:
 
 ## Technical Details
 
-- **Platform**: sensor
+- **Platform**: sensor + action
 - **Update Method**: Polling (configurable interval)
 - **Data Source**: Daily Activity Feed add-on REST API
 - **Storage**: Add-on handles all data persistence
+- **Version**: 1.1.0
+
+---
+
+## What's New in v1.1.0
+
+✨ Native `daily_activity_feed.add_event` action  
+✨ No `rest_command` configuration needed  
+✨ GUI support with text inputs and entity selectors  
+✨ Automatic camera snapshots  
+✨ Free text input for custom event types  
+✨ Priority levels support  
+✨ Full English interface  
 
 ---
 
