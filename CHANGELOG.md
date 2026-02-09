@@ -2,6 +2,87 @@
 
 Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert.
 
+## [2.0.0] - 2026-02-09
+
+### 🎉 Hauptfeatures
+
+#### Native Service-Integration
+- **Kein YAML mehr nötig!** Der `rest_command` Eintrag in der `configuration.yaml` ist nicht mehr erforderlich
+- Neuer nativer Service: `daily_activity_feed.add_event`
+- Automatische Service-Registrierung bei Integration-Setup
+- Vollständige Integration in Home Assistant Service-Browser
+- Autocomplete und Validierung für alle Parameter
+
+#### Kamera-Integration
+- Automatische Snapshots über `camera_entity` Parameter
+- Keine manuelle `camera.snapshot` Action mehr nötig
+- Automatische Dateinamen-Generierung mit Zeitstempel
+- Speicherung in `/config/www/` mit `/local/` URL
+- Fallback bei Snapshot-Fehler (Event wird trotzdem erstellt)
+
+#### Neue Service-Parameter
+- `camera_entity`: Automatischer Snapshot von Kamera-Entity
+- `priority`: Event-Priorität (`low`, `normal`, `high`)
+- `timestamp`: Optionaler eigener Zeitstempel (HH:MM:SS)
+- Vollständige Template-Unterstützung für alle Text-Parameter
+
+### 🔧 Technische Verbesserungen
+
+- Moderne async/await Service-Handler
+- Bessere Fehlerbehandlung mit aussagekräftigen Meldungen
+- Timeout-Handling für API-Aufrufe (10 Sekunden)
+- Service wird nur einmal registriert (Schutz vor Doppel-Registrierung)
+- Automatisches Service-Cleanup beim Entfernen der Integration
+- Optimierte Abhängigkeiten (`aiohttp>=3.9.0`)
+
+### 📚 Dokumentation
+
+- Vollständig aktualisiertes README
+- Moderne Beispiel-Automationen:
+  - Türklingel mit Auto-Snapshot
+  - Tür-Monitor mit Kontext-Logik
+  - Energie-Warnungen
+  - Motion Detection mit Bildern
+- Migrations-Guide von v1.x zu v2.0
+- Aktualisierte Troubleshooting-Sektion
+- Service-Parameter-Tabelle mit allen Optionen
+
+### ⚡ Breaking Changes
+
+**Migration erforderlich:**
+1. Entfernen des `rest_command.daily_activity_event` aus `configuration.yaml`
+2. Ersetzen von `rest_command.daily_activity_event` durch `daily_activity_feed.add_event` in allen Automationen
+3. Home Assistant Neustart nach Integration-Update
+
+**Alte Syntax (v1.x):**
+```yaml
+service: rest_command.daily_activity_event
+data:
+  type: "doorbell"
+  title: "Doorbell"
+  text: "Someone rang"
+  image: "/local/snapshot.jpg"
+```
+
+**Neue Syntax (v2.0):**
+```yaml
+service: daily_activity_feed.add_event
+data:
+  type: "doorbell"
+  title: "Doorbell"
+  text: "Someone rang"
+  camera_entity: camera.front_door  # Automatischer Snapshot!
+  priority: "high"
+```
+
+### 🐛 Bugfixes
+
+- Verbesserte Fehlerbehandlung bei Verbindungsproblemen
+- Besseres Logging für Debugging
+- Korrekte Cleanup-Logik beim Entfernen der Integration
+
+---
+
 ## [1.0.0] - 2026-02-08
 
 ### Hinzugefügt
@@ -58,7 +139,6 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 
 ### Geplant
 
-- HACS Integration
 - Web-UI für Event-Verwaltung
 - Erweiterte Filteroptionen
 - Export-Funktion (CSV, JSON)
@@ -67,3 +147,5 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 - SQLite als alternative Datenbank
 - Event-Statistiken
 - Mehrsprachige Unterstützung (Englisch)
+- Custom Event-Icons
+- Event-Suche und Filter in Dashboard
