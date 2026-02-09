@@ -24,7 +24,8 @@ Daily Activity Feed turns your Home Assistant into a timeline machine. Store and
 ✅ **Smart cleanup** - Auto-removes events older than yesterday  
 ✅ **Image support** - Attach camera snapshots to events  
 ✅ **HACS ready** - Install via GUI, no YAML hassle  
-✅ **Native service** - Use `daily_activity_feed.add_event` in automations  
+✅ **Native action** - Use `daily_activity_feed.add_event` in automations  
+✅ **GUI friendly** - Configure via UI with dropdowns and entity selectors  
 ✅ **Camera integration** - Automatic snapshots with `camera_entity`  
 ✅ **Lightweight** - FastAPI backend, JSON storage  
 
@@ -95,11 +96,11 @@ attributes:
       image: /local/doorbell_snapshot.jpg
 ```
 
-### 🎬 Service Actions
+### 🎬 Actions
 
 #### `daily_activity_feed.add_event`
 
-Add events to your feed using the native Home Assistant service.
+Add events to your feed using the native Home Assistant action.
 
 **Parameters:**
 
@@ -112,6 +113,16 @@ Add events to your feed using the native Home Assistant service.
 | `camera_entity` | ⬜ | Camera for auto-snapshot | `"camera.front_door"` |
 | `timestamp` | ⬜ | Custom timestamp (HH:MM:SS) | `"14:32:15"` |
 | `priority` | ⬜ | Event priority | `low`, `normal`, `high` |
+
+**🖥️ GUI Usage:**
+1. In your automation, click **Add Action**
+2. Search for `daily_activity_feed.add_event`
+3. Fill in the fields using dropdowns and entity selectors:
+   - **Type**: Dropdown with predefined options
+   - **Title**: Text input
+   - **Text**: Multi-line text input
+   - **Camera Entity**: Entity selector (shows all cameras)
+   - **Priority**: Dropdown (low/normal/high)
 
 ---
 
@@ -126,7 +137,7 @@ trigger:
     entity_id: binary_sensor.doorbell
     to: "on"
 action:
-  - service: daily_activity_feed.add_event
+  - action: daily_activity_feed.add_event
     data:
       type: "doorbell"
       title: "Doorbell"
@@ -144,7 +155,7 @@ trigger:
     entity_id: binary_sensor.front_door
     to: "on"
 action:
-  - service: daily_activity_feed.add_event
+  - action: daily_activity_feed.add_event
     data:
       type: "door"
       title: "Front Door Opened"
@@ -171,7 +182,7 @@ trigger:
     entity_id: sensor.power_consumption
     above: 3000
 action:
-  - service: daily_activity_feed.add_event
+  - action: daily_activity_feed.add_event
     data:
       type: "energy"
       title: "High Power Usage"
@@ -189,14 +200,14 @@ trigger:
     to: "on"
 action:
   # Take snapshot first
-  - service: camera.snapshot
+  - action: camera.snapshot
     target:
       entity_id: camera.garden
     data:
       filename: /config/www/motion_{{ now().strftime('%Y%m%d_%H%M%S') }}.jpg
   
   # Add to feed
-  - service: daily_activity_feed.add_event
+  - action: daily_activity_feed.add_event
     data:
       type: "security"
       title: "Motion Detected"
@@ -273,7 +284,8 @@ Use any type you want, or stick to these conventions:
 
 ## 🆕 What's New in v2.0.0
 
-✨ **Native Service Support** - No more `rest_command` in `configuration.yaml`  
+✨ **Native Action Support** - No more `rest_command` in `configuration.yaml`  
+✨ **GUI Support** - Full UI integration with dropdowns and entity selectors  
 ✨ **Auto Camera Snapshots** - Use `camera_entity` parameter for automatic snapshots  
 ✨ **Priority Levels** - Mark events as `low`, `normal`, or `high` priority  
 ✨ **Better Error Handling** - Clear error messages in logs  
@@ -285,7 +297,8 @@ If you're upgrading from v1.x:
 1. Update the integration via HACS
 2. **Remove** the `rest_command` from your `configuration.yaml`
 3. Replace `rest_command.daily_activity_event` with `daily_activity_feed.add_event`
-4. Restart Home Assistant
+4. Change `service:` to `action:` in your automations
+5. Restart Home Assistant
 
 **Old (v1.x):**
 ```yaml
@@ -300,7 +313,7 @@ action:
 **New (v2.0):**
 ```yaml
 action:
-  - service: daily_activity_feed.add_event
+  - action: daily_activity_feed.add_event
     data:
       type: "doorbell"
       title: "Doorbell"
@@ -318,8 +331,8 @@ action:
 **Integration not found**  
 → Verify add-on is running, test `http://[HA-IP]:8099/`
 
-**Service not available**  
-→ Check Developer Tools → Services, search for `daily_activity_feed.add_event`
+**Action not available**  
+→ Check Developer Tools → Actions, search for `daily_activity_feed.add_event`
 
 **Camera snapshot fails**  
 → Ensure camera entity exists and `/config/www/` directory is writable
