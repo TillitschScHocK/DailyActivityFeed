@@ -1,4 +1,5 @@
 """Daily Activity Feed Integration"""
+import asyncio
 import logging
 from datetime import datetime
 from typing import Any
