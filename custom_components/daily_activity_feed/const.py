@@ -13,3 +13,15 @@ DEFAULT_SCAN_INTERVAL = 30
 # Sensor
 SENSOR_TODAY = "today"
 SENSOR_YESTERDAY = "yesterday"
+
+# Services
+SERVICE_ADD_EVENT = "add_event"
+
+# Service Attributes
+ATTR_TYPE = "type"
+ATTR_TITLE = "title"
+ATTR_TEXT = "text"
+ATTR_IMAGE = "image"
+ATTR_CAMERA_ENTITY = "camera_entity"
+ATTR_TIMESTAMP = "timestamp"
+ATTR_PRIORITY = "priority"
