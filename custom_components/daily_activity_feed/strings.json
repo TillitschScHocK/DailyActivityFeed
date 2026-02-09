@@ -2,66 +2,66 @@
   "config": {
     "step": {
       "user": {
-        "title": "Daily Activity Feed konfigurieren",
-        "description": "Gebe die URL des Daily Activity Feed Addons an.",
+        "title": "Configure Daily Activity Feed",
+        "description": "Enter the URL of the Daily Activity Feed add-on.",
         "data": {
-          "addon_url": "Addon URL",
-          "scan_interval": "Aktualisierungsintervall (Sekunden)"
+          "addon_url": "Add-on URL",
+          "scan_interval": "Update Interval (seconds)"
         }
       }
     },
     "error": {
-      "cannot_connect": "Verbindung zum Addon fehlgeschlagen. Stelle sicher, dass das Addon l\u00e4uft.",
-      "unknown": "Ein unbekannter Fehler ist aufgetreten."
+      "cannot_connect": "Failed to connect to add-on. Make sure the add-on is running.",
+      "unknown": "An unknown error occurred."
     },
     "abort": {
-      "already_configured": "Diese Integration wurde bereits konfiguriert."
+      "already_configured": "This integration is already configured."
     }
   },
   "options": {
     "step": {
       "init": {
-        "title": "Daily Activity Feed Optionen",
-        "description": "Konfiguriere die Einstellungen f\u00fcr Daily Activity Feed.",
+        "title": "Daily Activity Feed Options",
+        "description": "Configure the settings for Daily Activity Feed.",
         "data": {
-          "addon_url": "Addon URL",
-          "scan_interval": "Aktualisierungsintervall (Sekunden)"
+          "addon_url": "Add-on URL",
+          "scan_interval": "Update Interval (seconds)"
         }
       }
     }
   },
   "services": {
     "add_event": {
-      "name": "Event hinzuf\u00fcgen",
-      "description": "F\u00fcgt ein neues Event zum Daily Activity Feed hinzu",
+      "name": "Add Event",
+      "description": "Add a new event to the Daily Activity Feed",
       "fields": {
         "type": {
-          "name": "Typ",
-          "description": "Art des Events"
+          "name": "Type",
+          "description": "Event type"
         },
         "title": {
-          "name": "Titel",
-          "description": "Kurzer Titel f\u00fcr das Event"
+          "name": "Title",
+          "description": "Short title for the event"
         },
         "text": {
-          "name": "Beschreibung",
-          "description": "Detaillierte Beschreibung des Events"
+          "name": "Description",
+          "description": "Detailed description of the event"
         },
         "image": {
-          "name": "Bild-URL",
-          "description": "Optionale Bild-URL (z.B. /local/snapshot.jpg)"
+          "name": "Image URL",
+          "description": "Optional image URL (e.g. /local/snapshot.jpg)"
         },
         "camera_entity": {
-          "name": "Kamera-Entity",
-          "description": "Automatischer Snapshot von dieser Kamera (Alternative zu image)"
+          "name": "Camera Entity",
+          "description": "Automatic snapshot from this camera (alternative to image)"
         },
         "timestamp": {
-          "name": "Zeitstempel",
-          "description": "Optionaler eigener Zeitstempel (HH:MM:SS Format)"
+          "name": "Timestamp",
+          "description": "Optional custom timestamp (HH:MM:SS format)"
         },
         "priority": {
-          "name": "Priorit\u00e4t",
-          "description": "Priorit\u00e4t des Events"
+          "name": "Priority",
+          "description": "Event priority level"
         }
       }
     }
