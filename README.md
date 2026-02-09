@@ -25,7 +25,8 @@ Daily Activity Feed turns your Home Assistant into a timeline machine. Store and
 ✅ **Image support** - Attach camera snapshots to events  
 ✅ **HACS ready** - Install via GUI, no YAML hassle  
 ✅ **Native action** - Use `daily_activity_feed.add_event` in automations  
-✅ **GUI friendly** - Configure via UI with dropdowns and entity selectors  
+✅ **GUI friendly** - Configure via UI with text inputs and entity selectors  
+✅ **Custom event types** - Free text input for any event type you want  
 ✅ **Camera integration** - Automatic snapshots with `camera_entity`  
 ✅ **Lightweight** - FastAPI backend, JSON storage  
 
@@ -106,7 +107,7 @@ Add events to your feed using the native Home Assistant action.
 
 | Parameter | Required | Description | Example |
 |-----------|----------|-------------|----------|
-| `type` | ✅ | Event type | `doorbell`, `door`, `energy`, `security` |
+| `type` | ✅ | Event type (free text) | `doorbell`, `door`, `energy`, `security` |
 | `title` | ✅ | Short title | `"Doorbell"` |
 | `text` | ✅ | Event description | `"Someone rang the doorbell"` |
 | `image` | ⬜ | Image URL | `"/local/snapshot.jpg"` |
@@ -117,12 +118,14 @@ Add events to your feed using the native Home Assistant action.
 **🖥️ GUI Usage:**
 1. In your automation, click **Add Action**
 2. Search for `daily_activity_feed.add_event`
-3. Fill in the fields using dropdowns and entity selectors:
-   - **Type**: Dropdown with predefined options
+3. Fill in the fields:
+   - **Type**: Free text input (enter any event type)
    - **Title**: Text input
-   - **Text**: Multi-line text input
+   - **Description**: Multi-line text input
    - **Camera Entity**: Entity selector (shows all cameras)
-   - **Priority**: Dropdown (low/normal/high)
+   - **Priority**: Dropdown (Low/Normal/High)
+   - **Image URL**: Optional text input
+   - **Timestamp**: Optional text input (HH:MM:SS)
 
 ---
 
@@ -188,6 +191,23 @@ action:
       title: "High Power Usage"
       text: "Consumption at {{ states('sensor.power_consumption') }} W"
       priority: "high"
+```
+
+#### Custom Event Type Example
+
+```yaml
+alias: Package Delivered
+trigger:
+  - platform: state
+    entity_id: binary_sensor.mailbox
+    to: "on"
+action:
+  - action: daily_activity_feed.add_event
+    data:
+      type: "package"  # Custom type!
+      title: "Package Delivery"
+      text: "A package was delivered"
+      camera_entity: camera.mailbox
 ```
 
 #### Using Pre-existing Image
@@ -269,38 +289,45 @@ Clear events (`day` = `today` or `yesterday`)
 
 ## 📝 Event Types
 
-Use any type you want, or stick to these conventions:
+Use **any custom type** you want! The type field accepts free text input, so you can create your own categories:
 
-| Type | Description | Icon Suggestion |
-|------|-------------|----------------|
+| Type Example | Description | Icon Suggestion |
+|--------------|-------------|----------------|
 | `doorbell` | Doorbell pressed | 🔔 |
 | `door` | Door opened/closed | 🚪 |
 | `energy` | Energy alerts | ⚡ |
 | `security` | Security events | 🔒 |
 | `device` | Device events | 📱 |
+| `package` | Package delivery | 📦 |
+| `visitor` | Visitor detected | 👥 |
+| `weather` | Weather alerts | ☁️ |
 | `custom` | Anything else | ✨ |
+
+**The possibilities are endless!** Just enter any text you want as the type.
 
 ---
 
-## 🆕 What's New in v2.0.0
+## 🆕 What's New in v1.1.0
 
 ✨ **Native Action Support** - No more `rest_command` in `configuration.yaml`  
-✨ **GUI Support** - Full UI integration with dropdowns and entity selectors  
+✨ **GUI Support** - Full UI integration with text inputs and entity selectors  
+✨ **Custom Event Types** - Free text input for any event type (no restrictions!)  
 ✨ **Auto Camera Snapshots** - Use `camera_entity` parameter for automatic snapshots  
 ✨ **Priority Levels** - Mark events as `low`, `normal`, or `high` priority  
 ✨ **Better Error Handling** - Clear error messages in logs  
 ✨ **Template Support** - Full Jinja2 template support in all text fields  
+✨ **English Interface** - All texts and UI elements in English  
 
-### Migration from v1.x
+### Migration from v1.0.x
 
-If you're upgrading from v1.x:
+If you're upgrading from v1.0.x:
 1. Update the integration via HACS
 2. **Remove** the `rest_command` from your `configuration.yaml`
 3. Replace `rest_command.daily_activity_event` with `daily_activity_feed.add_event`
 4. Change `service:` to `action:` in your automations
 5. Restart Home Assistant
 
-**Old (v1.x):**
+**Old (v1.0.x):**
 ```yaml
 action:
   - service: rest_command.daily_activity_event
@@ -310,12 +337,12 @@ action:
       text: "Someone rang"
 ```
 
-**New (v2.0):**
+**New (v1.1.0):**
 ```yaml
 action:
   - action: daily_activity_feed.add_event
     data:
-      type: "doorbell"
+      type: "doorbell"  # Can be any custom text!
       title: "Doorbell"
       text: "Someone rang"
       camera_entity: camera.front_door  # Optional auto-snapshot
