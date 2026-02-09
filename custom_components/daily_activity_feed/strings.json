@@ -29,5 +29,41 @@
         }
       }
     }
+  },
+  "services": {
+    "add_event": {
+      "name": "Event hinzuf\u00fcgen",
+      "description": "F\u00fcgt ein neues Event zum Daily Activity Feed hinzu",
+      "fields": {
+        "type": {
+          "name": "Typ",
+          "description": "Art des Events"
+        },
+        "title": {
+          "name": "Titel",
+          "description": "Kurzer Titel f\u00fcr das Event"
+        },
+        "text": {
+          "name": "Beschreibung",
+          "description": "Detaillierte Beschreibung des Events"
+        },
+        "image": {
+          "name": "Bild-URL",
+          "description": "Optionale Bild-URL (z.B. /local/snapshot.jpg)"
+        },
+        "camera_entity": {
+          "name": "Kamera-Entity",
+          "description": "Automatischer Snapshot von dieser Kamera (Alternative zu image)"
+        },
+        "timestamp": {
+          "name": "Zeitstempel",
+          "description": "Optionaler eigener Zeitstempel (HH:MM:SS Format)"
+        },
+        "priority": {
+          "name": "Priorit\u00e4t",
+          "description": "Priorit\u00e4t des Events"
+        }
+      }
+    }
   }
 }
