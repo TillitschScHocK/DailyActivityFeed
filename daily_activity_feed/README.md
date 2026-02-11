@@ -1,46 +1,42 @@
+<div align="center">
+
 # Daily Activity Feed Add-on
 
-![Logo](logo.png)
+**Lightweight REST API for persistent Home Assistant event storage**
 
-## About
+[![HACS](https://img.shields.io/badge/HACS-Custom-orange?style=for-the-badge&logo=homeassistant)](https://github.com/hacs/integration)
+[![License](https://img.shields.io/github/license/TillitschScHocK/DAF---DailyActivityFeed?style=for-the-badge)](LICENSE)
+[![Donate](https://img.shields.io/badge/Donate-PayPal-blue?style=for-the-badge&logo=paypal)](https://paypal.me/Schock07)
 
-The Daily Activity Feed add-on provides a lightweight REST API for storing Home Assistant events with automatic cleanup and persistent storage.
-
-### Features
-
-✨ **REST API** - Simple HTTP endpoints for event management  
-📋 **Persistent Storage** - JSON-based event database  
-🧹 **Auto Cleanup** - Automatically removes events older than yesterday  
-📸 **Image Support** - Store camera snapshots with events  
-⚡ **FastAPI** - Modern, fast Python backend  
+</div>
 
 ---
 
-## Installation
+## 🎯 About
 
-1. Add this repository to your Home Assistant:
-   ```
-   https://github.com/TillitschScHocK/DAF---DailyActivityFeed
-   ```
+This add-on provides the backend API for the Daily Activity Feed integration. It stores events in a persistent JSON database with automatic cleanup.
 
-2. Install the **Daily Activity Feed** add-on
-
-3. Configure options (see below)
-
-4. Start the add-on
+**Features:**
+- ⚡ FastAPI REST backend
+- 📦 Persistent JSON storage
+- 🧹 Auto-cleanup (removes events older than yesterday)
+- 📸 Image/snapshot support
+- 🔄 Automatic date rollover
 
 ---
 
-## Configuration
+## 🚀 Quick Start
 
-### Options
+1. Start this add-on
+2. Install the [Daily Activity Feed integration](https://github.com/TillitschScHocK/DailyActivityFeed) via HACS
+3. Configure the integration to connect to this add-on
+4. Use `daily_activity_feed.add_event` in your automations
 
-| Option | Default | Description |
-|--------|---------|-------------|
-| `port` | 8099 | API port |
-| `max_events_per_day` | 100 | Maximum events to store per day |
+See the **Documentation** tab for detailed API reference and examples.
 
-### Example Configuration
+---
+
+## ⚙️ Configuration
 
 ```json
 {
@@ -49,50 +45,18 @@ The Daily Activity Feed add-on provides a lightweight REST API for storing Home 
 }
 ```
 
----
+| Option | Default | Description |
+|--------|---------|-------------|
+| `port` | 8099 | API port (change if already in use) |
+| `max_events_per_day` | 100 | Maximum events stored per day |
 
-## API Reference
-
-### Health Check
-```
-GET /
-```
-Returns service status and version information.
-
-### Add Event
-```
-POST /api/event
-Content-Type: application/json
-
-{
-  "type": "doorbell",
-  "title": "Doorbell",
-  "text": "Someone rang the doorbell",
-  "image": "/local/snapshot.jpg"
-}
-```
-
-### Get Today's Events
-```
-GET /api/events/today
-```
-
-### Get Yesterday's Events
-```
-GET /api/events/yesterday
-```
-
-### Clear Events
-```
-DELETE /api/events/{day}
-```
-Where `day` is either `today` or `yesterday`.
+**Note:** If you change the port, update the integration settings accordingly.
 
 ---
 
-## Logs
+## 📊 Logs
 
-The add-on provides clean, minimal logging:
+The add-on provides clean logging:
 
 **Startup:**
 ```
@@ -101,7 +65,6 @@ Daily Activity Feed API
 =========================================
 Port: 8099
 Max events/day: 100
-Data: /data/events.json
 Loaded: 6 today, 0 yesterday
 Ready to accept events
 =========================================
@@ -114,52 +77,10 @@ Ready to accept events
 
 ---
 
-## Data Storage
-
-Events are stored in `/data/events.json`:
-
-```json
-{
-  "today": [
-    {
-      "type": "doorbell",
-      "title": "Doorbell",
-      "text": "Someone rang the doorbell",
-      "timestamp": "14:32:15",
-      "date": "2026-02-08",
-      "image": "/local/snapshot.jpg"
-    }
-  ],
-  "yesterday": []
-}
-```
-
-Data is automatically cleaned:
-- Events older than yesterday are removed
-- Cleanup runs on startup and with each new event
-- Date rollover happens automatically at midnight
-
----
-
-## Troubleshooting
-
-### Add-on won't start
-- Check if port 8099 is already in use
-- Review add-on logs for errors
-- Ensure Home Assistant has sufficient resources
-
-### API not responding
-- Verify add-on is running
-- Check network connectivity
-- Test with: `http://[HA-IP]:8099/`
-
----
-
-## Support
-
-For issues and feature requests:
-[GitHub Issues](https://github.com/TillitschScHocK/DAF---DailyActivityFeed/issues)
-
----
+<div align="center">
 
 **Made with ❤️ for Home Assistant**
+
+[Report Bug](https://github.com/TillitschScHocK/DailyActivityFeed/issues) • [Request Feature](https://github.com/TillitschScHocK/DailyActivityFeed/issues) • [Full Documentation](https://github.com/TillitschScHocK/DailyActivityFeed)
+
+</div>
