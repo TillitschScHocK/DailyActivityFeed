@@ -2,6 +2,7 @@
 import json
 import os
 import sys
+import warnings
 from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Optional, List
@@ -9,6 +10,9 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 import uvicorn
 import logging
+
+# Suppress deprecation warnings
+warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 # Configure logging - reduce verbosity
 logging.basicConfig(
@@ -135,7 +139,7 @@ async def add_event(event: Event):
         
         now = datetime.now()
         stored_event = StoredEvent(
-            **event.dict(),
+            **event.model_dump(),
             timestamp=now.strftime("%H:%M:%S"),
             date=now.strftime("%Y-%m-%d")
         )
@@ -147,13 +151,13 @@ async def add_event(event: Event):
         if len(data["today"]) >= MAX_EVENTS:
             data["today"] = data["today"][:MAX_EVENTS-1]
         
-        data["today"].insert(0, stored_event.dict())
+        data["today"].insert(0, stored_event.model_dump())
         save_events(data)
         
         # Only log event creation, not regular fetches
         logger.info(f"\u2713 Event: [{event.type}] {event.title}")
         
-        return {"status": "success", "event": stored_event.dict()}
+        return {"status": "success", "event": stored_event.model_dump()}
     
     except Exception as e:
         logger.error(f"Error adding event: {e}")
