@@ -71,9 +71,10 @@ class DailyActivityFeedConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             _LOGGER.error("Error testing connection: %s", err)
             return False
 
-    @staticmethod
+    @classmethod
     @callback
     def async_get_options_flow(
+        cls,
         config_entry: config_entries.ConfigEntry,
     ) -> config_entries.OptionsFlow:
         """Create the options flow."""
