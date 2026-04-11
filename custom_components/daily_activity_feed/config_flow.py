@@ -34,11 +34,9 @@ class DailyActivityFeedConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         errors = {}
 
         if user_input is not None:
-            # Validate the addon URL
             addon_url = user_input[CONF_ADDON_URL]
-            
+
             if await self._test_connection(addon_url):
-                # Create entry
                 return self.async_create_entry(
                     title="Daily Activity Feed",
                     data=user_input,
@@ -46,7 +44,6 @@ class DailyActivityFeedConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             else:
                 errors["base"] = "cannot_connect"
 
-        # Show form
         data_schema = vol.Schema(
             {
                 vol.Required(
@@ -86,6 +83,10 @@ class DailyActivityFeedConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
 class DailyActivityFeedOptionsFlow(config_entries.OptionsFlow):
     """Handle options flow for Daily Activity Feed."""
+
+    def __init__(self, config_entry: config_entries.ConfigEntry) -> None:
+        """Initialize options flow."""
+        super().__init__(config_entry)
 
     async def async_step_init(
         self, user_input: dict[str, Any] | None = None
