@@ -1,13 +1,12 @@
 """Config flow for Daily Activity Feed integration."""
 import logging
-import aiohttp
 import async_timeout
 from typing import Any
 
 import voluptuous as vol
 
 from homeassistant import config_entries
-from homeassistant.core import HomeAssistant, callback
+from homeassistant.core import callback
 from homeassistant.data_entry_flow import FlowResult
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
@@ -77,16 +76,12 @@ class DailyActivityFeedConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     def async_get_options_flow(
         config_entry: config_entries.ConfigEntry,
     ) -> config_entries.OptionsFlow:
-        """Get the options flow for this handler."""
-        return DailyActivityFeedOptionsFlow(config_entry)
+        """Create the options flow."""
+        return DailyActivityFeedOptionsFlow()
 
 
 class DailyActivityFeedOptionsFlow(config_entries.OptionsFlow):
     """Handle options flow for Daily Activity Feed."""
-
-    def __init__(self, config_entry: config_entries.ConfigEntry) -> None:
-        """Initialize options flow."""
-        super().__init__(config_entry)
 
     async def async_step_init(
         self, user_input: dict[str, Any] | None = None
