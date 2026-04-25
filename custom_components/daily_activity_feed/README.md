@@ -1,6 +1,6 @@
 # Daily Activity Feed Integration
 
-<img src="icon.png" width="128" height="128" alt="Icon">
+<img src="brand/icon.png" width="128" height="128" alt="Icon">
 
 ## Overview
 
