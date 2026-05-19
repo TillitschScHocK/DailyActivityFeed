@@ -3,6 +3,7 @@ import json
 import os
 import sys
 import warnings
+from contextlib import asynccontextmanager
 from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Optional, List
@@ -34,20 +35,6 @@ MAX_EVENTS = int(os.getenv("MAX_EVENTS", 100))
 
 # Ensure data directory exists
 DATA_DIR.mkdir(parents=True, exist_ok=True)
-
-app = FastAPI(title="Daily Activity Feed API")
-
-
-class Event(BaseModel):
-    type: str
-    title: str
-    text: str
-    image: Optional[str] = None
-
-
-class StoredEvent(Event):
-    timestamp: str
-    date: str
 
 
 def load_events() -> dict:
@@ -103,9 +90,21 @@ def cleanup_old_events() -> None:
     save_events(data)
 
 
-@app.on_event("startup")
-async def startup_event():
-    """Run cleanup on startup"""
+class Event(BaseModel):
+    type: str
+    title: str
+    text: str
+    image: Optional[str] = None
+
+
+class StoredEvent(Event):
+    timestamp: str
+    date: str
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """Application lifespan handler (replaces deprecated on_event)"""
     logger.info("=========================================")
     logger.info("Daily Activity Feed API")
     logger.info("=========================================")
@@ -117,6 +116,10 @@ async def startup_event():
     logger.info(f"Loaded: {len(data.get('today', []))} today, {len(data.get('yesterday', []))} yesterday")
     logger.info("Ready to accept events")
     logger.info("=========================================")
+    yield
+
+
+app = FastAPI(title="Daily Activity Feed API", lifespan=lifespan)
 
 
 @app.get("/")
